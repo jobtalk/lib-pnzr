@@ -1,0 +1,11 @@
+package: github.com/jobtalk/lib-thor
+import:
+- package: github.com/aws/aws-sdk-go
+  subpackages:
+  - aws
+  - aws/credentials
+- package: github.com/jobtalk/thor
+  subpackages:
+  - api
+  - lib
+  - lib/setting
