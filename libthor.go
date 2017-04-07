@@ -7,12 +7,12 @@ typedef struct{
 	char* kmsKeyID;
 	char* region;
 	char* externalPath;
-}setting;
+} setting;
 
 typedef struct {
 	char* msg;
 	char* error;
-}result;
+} result;
 */
 import "C"
 import (
@@ -62,12 +62,12 @@ func newSetting(s *C.setting) *setting {
 }
 
 //export deploy
-func deploy(s *C.setting) *C.result {
+func deploy(s *C.setting) C.result {
 	result, err := deployGo(newSetting(s))
 	if err != nil {
-		return &C.result{C.CString(""), C.CString(err.Error())}
+		return C.result{C.CString(""), C.CString(err.Error())}
 	}
-	return &C.result{C.CString(result), C.CString("")}
+	return C.result{C.CString(result), C.CString("")}
 }
 
 func isEncrypted(data []byte) bool {
@@ -180,6 +180,9 @@ func fileList(root string) ([]string, error) {
 	ret := []string{}
 	err := filepath.Walk(root,
 		func(path string, info os.FileInfo, err error) error {
+			if info == nil {
+				return nil
+			}
 			if info.IsDir() {
 				return nil
 			}
